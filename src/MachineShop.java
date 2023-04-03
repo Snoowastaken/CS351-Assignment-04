@@ -51,6 +51,9 @@ public class MachineShop extends Model {
     //-----------------------------------------------------------
     /* Initialize the model. */
     public void init() {
+        //state variables
+        machineIsBusy = false;
+        inspectorIsBusy = false;
         //queues
         processingQueue = new ProcessQueue<>(this, "Processing Queue", true, true);
         inspectionQueue = new ProcessQueue<>(this, "Inspection Queue", true, true);
