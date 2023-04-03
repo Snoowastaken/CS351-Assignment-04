@@ -8,6 +8,8 @@ public class MachineShop extends Model {
 
 
     /* Structures used in our model. */
+    protected Queue<Part> processingQueue;
+    protected Queue<Part> inspectionQueue;
 
 
     /* Random number streams for the model. */
@@ -19,6 +21,12 @@ public class MachineShop extends Model {
 
 
     /* Statistics for the model. */
+    protected Tally responseTime;
+    protected Count numberOfParts;
+    protected Tally processingQueueLength;
+    protected Tally inspectionQueueLength;
+    protected Accumulate machineUtilization;
+    protected Accumulate inspectorUtilization;
 
 
     //-----------------------------------------------------------
@@ -41,6 +49,7 @@ public class MachineShop extends Model {
     //-----------------------------------------------------------
     /* Initialize the model. */
     public void init() {
+
     }
 
     //-----------------------------------------------------------
@@ -54,8 +63,4 @@ public class MachineShop extends Model {
 
 
     }
-
-
-
-
 }
