@@ -8,8 +8,8 @@ public class MachineShop extends Model {
 
 
     /* Structures used in our model. */
-    protected Queue<Part> processingQueue;
-    protected Queue<Part> inspectionQueue;
+    protected ProcessQueue<Part> processingQueue;
+    protected ProcessQueue<Part> inspectionQueue;
 
 
     /* Random number streams for the model. */
@@ -49,6 +49,22 @@ public class MachineShop extends Model {
     //-----------------------------------------------------------
     /* Initialize the model. */
     public void init() {
+        //queues
+        processingQueue = new ProcessQueue<>(this, "Processing Queue", true, true);
+        inspectionQueue = new ProcessQueue<>(this, "Inspection Queue", true, true);
+        //random number streams
+        interArrivalTime = new ContDistExponential(this, "Inter Arrival Time", 7.0, true, true);
+        processingTime = new ContDistExponential(this, "Processing Time", 4.5, true, true);
+        inspectionTime = new ContDistNormal(this, "Inspection Time", 5.0, 1.0, true, true);
+        refiningTime = new ContDistExponential(this, "Refining Time", 3.0, true, true);
+        needsRefining = new BoolDistBernoulli(this, "Needs Refining", 0.25, true, true);
+        //statistics
+        responseTime = new Tally(this, "Response Time", true, true);
+        numberOfParts = new Count(this, "Number of Parts", true, true);
+        processingQueueLength = new Tally(this, "Processing Queue Length", true, true);
+        inspectionQueueLength = new Tally(this, "Inspection Queue Length", true, true);
+        machineUtilization = new Accumulate(this, "Machine Utilization", true, true);
+        inspectorUtilization = new Accumulate(this, "Inspector Utilization", true, true);
 
     }
 
