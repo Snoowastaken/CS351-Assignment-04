@@ -47,7 +47,7 @@ public class MachineShop extends Model {
     /* Do initial schedules. */
     public void doInitialSchedules() {
         Generator generator = new Generator(this, "Generator", true);
-        generator.activate();
+        generator.activate(new TimeSpan(0, TimeUnit.MINUTES));
     }
 
     //-----------------------------------------------------------
