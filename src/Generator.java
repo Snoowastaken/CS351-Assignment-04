@@ -10,5 +10,11 @@ public class Generator extends SimProcess {
 
     public void lifeCycle() throws SuspendExecution {
         MachineShop model = (MachineShop)getModel();
+        while(true){
+            double interArrivalTime = model.interArrivalTime.sample();
+            hold(new TimeSpan(interArrivalTime, TimeUnit.MINUTES));
+            Part part = new Part(model, "Part", true);
+            part.activate();
+        }
     }
 }

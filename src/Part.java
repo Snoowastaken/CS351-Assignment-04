@@ -8,6 +8,8 @@ public class Part extends SimProcess {
     }
 
     public void lifeCycle() throws SuspendExecution {
+        MachineShop model = (MachineShop)getModel();
+
 
     }
 }
