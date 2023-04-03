@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MachineShop extends Model {
     /*State Variables for the model*/
+    protected boolean machineIsBusy;
+    protected boolean inspectorIsBusy;
 
 
     /* Structures used in our model. */
