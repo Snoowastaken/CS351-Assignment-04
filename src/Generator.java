@@ -1,3 +1,4 @@
+//William Schauberger
 import desmoj.core.simulator.*;
 import java.util.concurrent.TimeUnit;
 import co.paralleluniverse.fibers.SuspendExecution;

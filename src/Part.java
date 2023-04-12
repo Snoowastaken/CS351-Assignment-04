@@ -1,5 +1,7 @@
+//William Schauberger
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.*;
+
 import java.util.concurrent.TimeUnit;
 
 public class Part extends SimProcess {
@@ -9,12 +11,12 @@ public class Part extends SimProcess {
     }
 
     public void lifeCycle() throws SuspendExecution {
-        MachineShop model = (MachineShop)getModel();
+        MachineShop model = (MachineShop) getModel();
         //get current time
         double startTime = presentTime().getTimeAsDouble(TimeUnit.MINUTES);
         model.processingQueue.insert(this);
         model.numberOfParts.update();
-        if(model.machineIsBusy){
+        if (model.machineIsBusy) {
             passivate();
         } else {
             model.machineIsBusy = true;
@@ -26,7 +28,7 @@ public class Part extends SimProcess {
             model.machineUtilization.update(0.0);
             model.sendTraceNote("Part " + this.getName() + " has been processed");
             model.inspectionQueue.insert(this);
-            if(model.inspectorIsBusy){
+            if (model.inspectorIsBusy) {
                 passivate();
             } else {
                 model.inspectorIsBusy = true;
@@ -38,7 +40,7 @@ public class Part extends SimProcess {
                 model.inspectorIsBusy = false;
                 model.inspectorUtilization.update(0.0);
                 boolean needsRefining = model.needsRefining.sample();
-                if(!needsRefining){
+                if (!needsRefining) {
                     model.numberOfParts.update(-1);
                     //get current time
                     double endTime = presentTime().getTimeAsDouble(TimeUnit.MINUTES);
@@ -46,7 +48,7 @@ public class Part extends SimProcess {
                     model.sendTraceNote("Part " + this.getName() + " has been inspected");
                 } else {
                     model.processingQueue.insert(this);
-                    if(model.machineIsBusy){
+                    if (model.machineIsBusy) {
                         passivate();
                     } else {
                         model.machineIsBusy = true;

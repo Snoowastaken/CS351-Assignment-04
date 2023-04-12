@@ -1,3 +1,4 @@
+//William Schauberger
 import desmoj.core.simulator.*;
 import desmoj.core.dist.*;
 import desmoj.core.statistic.*;
