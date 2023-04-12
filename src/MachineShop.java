@@ -25,8 +25,6 @@ public class MachineShop extends Model {
     /* Statistics for the model. */
     protected Tally responseTime;
     protected Count numberOfParts;
-    protected Tally processingQueueLength;
-    protected Tally inspectionQueueLength;
     protected Accumulate machineUtilization;
     protected Accumulate inspectorUtilization;
 
@@ -68,8 +66,6 @@ public class MachineShop extends Model {
         //statistics
         responseTime = new Tally(this, "Response Time", true, true);
         numberOfParts = new Count(this, "Number of Parts", true, true);
-        processingQueueLength = new Tally(this, "Processing Queue Length", true, true);
-        inspectionQueueLength = new Tally(this, "Inspection Queue Length", true, true);
         machineUtilization = new Accumulate(this, "Machine Utilization", true, true);
         inspectorUtilization = new Accumulate(this, "Inspector Utilization", true, true);
 
@@ -86,9 +82,9 @@ public class MachineShop extends Model {
         exp.setShowProgressBar(false);
         exp.stop(new TimeInstant(24, TimeUnit.HOURS));
         exp.tracePeriod(new TimeInstant(0, TimeUnit.MINUTES),
-                new TimeInstant(60, TimeUnit.MINUTES));
+                new TimeInstant(360, TimeUnit.MINUTES));
         exp.debugPeriod(new TimeInstant(0, TimeUnit.MINUTES),
-                new TimeInstant(60, TimeUnit.MINUTES));
+                new TimeInstant(360, TimeUnit.MINUTES));
         exp.start();
         exp.report();
         exp.finish();

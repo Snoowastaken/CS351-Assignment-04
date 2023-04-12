@@ -10,29 +10,28 @@ public class Part extends SimProcess {
 
     public void lifeCycle() throws SuspendExecution {
         MachineShop model = (MachineShop)getModel();
-        model.numberOfParts.update();
+        //get current time
+        double startTime = presentTime().getTimeAsDouble(TimeUnit.MINUTES);
         model.processingQueue.insert(this);
-        //update tally of queue length
-        model.processingQueueLength.update();
+        model.numberOfParts.update();
         if(model.machineIsBusy){
             passivate();
         } else {
             model.machineIsBusy = true;
-            model.machineUtilization.update(1.0);
+            model.machineUtilization.update(100.0);
             model.processingQueue.removeFirst();
             double processingTime = model.processingTime.sample();
             hold(new TimeSpan(processingTime, TimeUnit.MINUTES));
             model.machineIsBusy = false;
             model.machineUtilization.update(0.0);
+            model.sendTraceNote("Part " + this.getName() + " has been processed");
             model.inspectionQueue.insert(this);
-            //update tally of queue length
-            model.inspectionQueueLength.update();
             if(model.inspectorIsBusy){
                 passivate();
             } else {
                 model.inspectorIsBusy = true;
                 //update accumulator of utilization
-                model.inspectorUtilization.update(1.0);
+                model.inspectorUtilization.update(100.0);
                 model.inspectionQueue.removeFirst();
                 double inspectionTime = model.inspectionTime.sample();
                 hold(new TimeSpan(inspectionTime, TimeUnit.MINUTES));
@@ -40,20 +39,28 @@ public class Part extends SimProcess {
                 model.inspectorUtilization.update(0.0);
                 boolean needsRefining = model.needsRefining.sample();
                 if(!needsRefining){
-                    model.numberOfParts.update();
+                    model.numberOfParts.update(-1);
+                    //get current time
+                    double endTime = presentTime().getTimeAsDouble(TimeUnit.MINUTES);
+                    model.responseTime.update(endTime - startTime);
+                    model.sendTraceNote("Part " + this.getName() + " has been inspected");
                 } else {
                     model.processingQueue.insert(this);
                     if(model.machineIsBusy){
                         passivate();
                     } else {
                         model.machineIsBusy = true;
-                        model.machineUtilization.update(1.0);
+                        model.machineUtilization.update(100.0);
                         model.processingQueue.removeFirst();
                         double refiningTime = model.refiningTime.sample();
                         hold(new TimeSpan(refiningTime, TimeUnit.MINUTES));
                         model.machineIsBusy = false;
                         model.machineUtilization.update(0.0);
-                        model.numberOfParts.update();
+                        model.numberOfParts.update(-1);
+                        //get current time
+                        double endTime = presentTime().getTimeAsDouble(TimeUnit.MINUTES);
+                        model.responseTime.update(endTime - startTime);
+                        model.sendTraceNote("Part " + this.getName() + " has been refined");
                     }
                 }
             }
