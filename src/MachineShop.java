@@ -78,11 +78,20 @@ public class MachineShop extends Model {
     //-----------------------------------------------------------
     /* Run the model */
     public static void main(String[] args){
+        Experiment.setReferenceUnit(TimeUnit.MINUTES);
 
-
-
-
-
+        MachineShop model = new MachineShop(null, "Machine Shop", true, true);
+        Experiment exp = new Experiment("Machine Shop Model");
+        model.connectToExperiment(exp);
+        exp.setShowProgressBar(false);
+        exp.stop(new TimeInstant(24, TimeUnit.HOURS));
+        exp.tracePeriod(new TimeInstant(0, TimeUnit.MINUTES),
+                new TimeInstant(60, TimeUnit.MINUTES));
+        exp.debugPeriod(new TimeInstant(0, TimeUnit.MINUTES),
+                new TimeInstant(60, TimeUnit.MINUTES));
+        exp.start();
+        exp.report();
+        exp.finish();
 
 
     }
